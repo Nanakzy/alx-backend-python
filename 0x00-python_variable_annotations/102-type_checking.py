@@ -5,6 +5,7 @@ This module contains a function that zooms into an array.
 
 from typing import List, Tuple
 
+
 def zoom_array(lst: Tuple[int, ...], factor: int = 2) -> List[int]:
     """
     Zooms into an array.
@@ -21,6 +22,7 @@ def zoom_array(lst: Tuple[int, ...], factor: int = 2) -> List[int]:
         for i in range(factor)
     ]
     return zoomed_in
+
 
 array = (12, 72, 91)
 
