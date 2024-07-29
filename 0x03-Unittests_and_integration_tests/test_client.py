@@ -109,6 +109,16 @@ class TestIntegrationGithubOrgClient(unittest.TestCase):
         client = GithubOrgClient('org_name')
         self.assertEqual(client.public_repos(), self.expected_repos)
 
+    def test_public_repos_with_license(self):
+        """
+        Test that public_repos returns the correct list of repositories
+        with the specified license based on the fixtures.
+        """
+        client = GithubOrgClient('org_name')
+        self.assertEqual(
+                client.public_repos(license="apache-2.0"), ["repo1"]
+                )
+
 
 if __name__ == '__main__':
     unittest.main()
