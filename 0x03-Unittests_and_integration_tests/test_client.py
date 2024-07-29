@@ -25,18 +25,22 @@ class TestGithubOrgClient(unittest.TestCase):
         """
         client = GithubOrgClient(org_name)
         self.assertEqual(client.org, {"payload": True})
-        mock_get_json.assert_called_once_with(f"https://api.github.com/orgs/{org_name}")
+        mock_get_json.assert_called_once_with(
+            f"https://api.github.com/orgs/{org_name}"
+        )
 
     @patch.object(GithubOrgClient, 'org', new_callable=property)
     def test_public_repos_url(self, mock_org):
         """
-        Test that _public_repos_url returns the correct URL based on org payload.
+        Test_public_repos_url returns the correct URL based on org payload.
         """
         mock_org.return_value = {"repos_url": "http://example.com/repos"}
         client = GithubOrgClient('org_name')
         self.assertEqual(client._public_repos_url, "http://example.com/repos")
 
-    @patch('client.get_json', return_value=[{"name": "repo1"}, {"name": "repo2"}])
+    @patch('client.get_json', return_value=[
+        {"name": "repo1"}, {"name": "repo2"}
+    ])
     @patch.object(GithubOrgClient, '_public_repos_url', new_callable=property)
     def test_public_repos(self, mock_repos_url, mock_get_json):
         """
@@ -67,9 +71,13 @@ fixtures = {
     "apache2_repos": [{"name": "repo1", "license": {"key": "apache-2.0"}}]
 }
 
-@parameterized_class(("org_payload", "repos_payload", "expected_repos", "apache2_repos"), [
-    (fixtures["org_payload"], fixtures["repos_payload"], fixtures["expected_repos"], fixtures["apache2_repos"])
-])
+
+@parameterized_class(
+    ("org_payload", "repos_payload", "expected_repos", "apache2_repos"), [
+        (fixtures["org_payload"], fixtures["repos_payload"],
+         fixtures["expected_repos"], fixtures["apache2_repos"])
+    ]
+)
 class TestIntegrationGithubOrgClient(unittest.TestCase):
     """
     Integration test suite for GithubOrgClient.
@@ -95,7 +103,8 @@ class TestIntegrationGithubOrgClient(unittest.TestCase):
 
     def test_public_repos(self):
         """
-        Test that public_repos returns the correct list of repositories based on the fixtures.
+        Test that public_repos returns the correct list of repositories
+        based on the fixtures.
         """
         client = GithubOrgClient('org_name')
         self.assertEqual(client.public_repos(), self.expected_repos)
